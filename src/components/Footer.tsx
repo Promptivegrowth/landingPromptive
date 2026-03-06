@@ -58,7 +58,7 @@ export default function Footer() {
                         {/* Column 1: Brand */}
                         <div className="space-y-6 lg:col-span-4">
                             <div className="flex items-center gap-3">
-                                <Image src="/isotipo.png" alt="Promptive" width={32} height={32} />
+                                <Image src="/isotipo2.png" alt="Promptive" width={32} height={32} />
                                 <span className="text-xl font-bold text-slate-900 dark:text-white tracking-wide">PROMPTIVE</span>
                             </div>
                             <p className="text-base text-slate-500 dark:text-slate-400 max-w-sm leading-relaxed">{t("tagline")}</p>

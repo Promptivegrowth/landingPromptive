@@ -50,7 +50,7 @@ export default function Header() {
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between">
                 {/* Logo */}
                 <div className="flex items-center gap-3">
-                    <Image src="/isotipo.png" alt="Promptive" width={36} height={36} priority />
+                    <Image src="/isotipo2.png" alt="Promptive" width={36} height={36} priority />
                     <span className="text-lg font-extrabold text-slate-900 dark:text-white tracking-tight hidden sm:block">
                         PROMPTIVE
                     </span>
