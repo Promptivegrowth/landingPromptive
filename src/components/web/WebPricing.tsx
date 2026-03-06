@@ -47,7 +47,7 @@ export default function WebPricing() {
             name: t("web3Name"),
             price: t("web3Price"),
             desc: t("web3Desc"),
-            features: [t("web3F1"), t("web3F2"), t("web3F3"), t("web3F4"), t("web3F5"), t("web3F6"), t("web3F7"), t("web3F8"), t("web3F9"), t("web3F10")],
+            features: [t("web3F1"), t("web3F2"), t("web3F3"), t("web3F4"), t("web3F5"), t("web3F6"), t("web3F7"), t("web3F8"), t("web3F10")],
         },
     ];
 
@@ -69,7 +69,7 @@ export default function WebPricing() {
             name: t("ecom3Name"),
             price: t("ecom3Price"),
             desc: t("ecom3Desc"),
-            features: [t("ecom3F1"), t("ecom3F2"), t("ecom3F3"), t("ecom3F4"), t("ecom3F5"), t("ecom3F6"), t("ecom3F7"), t("ecom3F8"), t("ecom3F9"), t("ecom3F10"), t("ecom3F11"), t("ecom3F12")],
+            features: [t("ecom3F1"), t("ecom3F2"), t("ecom3F3"), t("ecom3F4"), t("ecom3F5"), t("ecom3F6"), t("ecom3F7"), t("ecom3F8"), t("ecom3F9"), t("ecom3F10"), t("ecom3F12")],
         },
     ];
 
