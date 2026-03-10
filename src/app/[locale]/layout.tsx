@@ -32,6 +32,9 @@ export const metadata: Metadata = {
             "Plataformas web y software a medida optimizados para la conversión.",
         type: "website",
     },
+    other: {
+        "facebook-domain-verification": "y6yiip6gya8b0jqearvai5p6fdcuhg",
+    },
 };
 
 export default async function LocaleLayout({
