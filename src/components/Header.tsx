@@ -5,7 +5,7 @@ import { useTranslations } from "next-intl";
 import { usePathname, useRouter } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import Image from "next/image";
-import { Globe, ArrowRight, ChevronDown, Sun, Moon } from "lucide-react";
+import { Globe, ArrowRight, ChevronDown, Sun, Moon, Menu, X } from "lucide-react";
 import { useTheme } from "./ThemeProvider";
 
 export default function Header() {
@@ -15,6 +15,7 @@ export default function Header() {
     const router = useRouter();
     const [scrolled, setScrolled] = useState(false);
     const [langOpen, setLangOpen] = useState(false);
+    const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
     const { theme, toggle } = useTheme();
 
     const currentLocale = pathname.startsWith("/en") ? "en" : "es";
@@ -25,6 +26,10 @@ export default function Header() {
         window.addEventListener("scroll", handleScroll);
         return () => window.removeEventListener("scroll", handleScroll);
     }, []);
+
+    useEffect(() => {
+        setMobileMenuOpen(false);
+    }, [pathname]);
 
     const switchLocale = (locale: string) => {
         const newPath = pathname.replace(/^\/(es|en)/, `/${locale}`);
@@ -146,8 +151,59 @@ export default function Header() {
                         {t("cta")}
                         <ArrowRight size={16} strokeWidth={2.5} />
                     </button>
+                    {/* Mobile Menu Button */}
+                    <button
+                        onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+                        className="md:hidden p-2 text-slate-600 dark:text-white/70 hover:bg-slate-100 dark:hover:bg-white/5 rounded-lg transition-colors"
+                        aria-label="Toggle menu"
+                    >
+                        {mobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
+                    </button>
                 </div>
             </div>
+
+            {/* Mobile Navigation Dropdown */}
+            <AnimatePresence>
+                {mobileMenuOpen && (
+                    <motion.div
+                        initial={{ opacity: 0, height: 0 }}
+                        animate={{ opacity: 1, height: "auto" }}
+                        exit={{ opacity: 0, height: 0 }}
+                        transition={{ duration: 0.2 }}
+                        className="md:hidden border-t border-slate-200/50 dark:border-white/5 bg-white/95 dark:bg-dark/95 backdrop-blur-xl overflow-hidden"
+                    >
+                        <div className="px-4 py-4 space-y-2 flex flex-col">
+                            <a
+                                href={`/${currentLocale}`}
+                                className={`px-4 py-3 rounded-lg text-sm font-bold transition-all duration-200 ${!isWebRoute
+                                    ? "bg-brand-purple/10 text-brand-purple dark:bg-brand-purple/20 dark:text-brand-pink"
+                                    : "text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white bg-slate-50 dark:bg-white/5"
+                                    }`}
+                            >
+                                {nav("software")}
+                            </a>
+                            <a
+                                href={`/${currentLocale}/desarrollo-web`}
+                                className={`px-4 py-3 rounded-lg text-sm font-bold transition-all duration-200 ${isWebRoute
+                                    ? "bg-brand-blue/10 text-brand-blue dark:bg-brand-blue/20 dark:text-brand-blue"
+                                    : "text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white bg-slate-50 dark:bg-white/5"
+                                    }`}
+                            >
+                                {nav("web")}
+                            </a>
+
+                            {/* CTA for Mobile */}
+                            <button
+                                onClick={handleCTA}
+                                className="mt-2 w-full flex items-center justify-center gap-2 px-6 py-3 rounded-lg bg-brand-orange text-dark font-bold text-sm hover:shadow-lg hover:shadow-brand-orange/25 active:scale-95 transition-all duration-200 sm:hidden"
+                            >
+                                {t("cta")}
+                                <ArrowRight size={16} strokeWidth={2.5} />
+                            </button>
+                        </div>
+                    </motion.div>
+                )}
+            </AnimatePresence>
         </header>
     );
 }
