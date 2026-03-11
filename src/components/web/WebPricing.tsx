@@ -24,8 +24,8 @@ export default function WebPricing() {
 
     const handleCTA = (planName: string) => {
         const msg = currentLocale === "es"
-            ? `Hola, me interesa el plan *${planName}* de diseño web. Quisiera iniciar el servicio, ¿podemos coordinar los detalles o agendar una reunión breve por Meet?`
-            : `Hello, I'm interested in the *${planName}* web design plan. I would like to start the service, can we coordinate the details or schedule a quick Google Meet?`;
+            ? `Hola, me interesa el plan *${planName}* de diseño web. Quisiera más información y coordinar una reunión breve por Meet para conocer los detalles.`
+            : `Hello, I'm interested in the *${planName}* web design plan. I would like more information and schedule a quick Google Meet to know the details.`;
         router.push(`/${currentLocale}/whatsapp?text=${encodeURIComponent(msg)}&type=web_development&plan=${encodeURIComponent(planName)}`);
     };
 
