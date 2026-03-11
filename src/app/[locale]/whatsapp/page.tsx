@@ -7,15 +7,31 @@ export default function WhatsAppBridge() {
     const searchParams = useSearchParams();
     const [mounted, setMounted] = useState(false);
     const [showFallback, setShowFallback] = useState(false);
+    const [fallbackUrl, setFallbackUrl] = useState("");
     const message = searchParams.get("text") || "Hola Promptive, quisiera agendar una demo gratuita y contarles mi idea";
     const leadType = searchParams.get("type") || "general";
     const leadPlan = searchParams.get("plan") || "none";
+    const phone = "51916854842";
 
     useEffect(() => {
         setMounted(true);
         const timer = setTimeout(() => setShowFallback(true), 2500);
+
+        // Pre-compute the best URL for the platform
+        const text = encodeURIComponent(message);
+        const isAndroid = /Android/i.test(navigator.userAgent);
+        const isIOS = /iPhone|iPad|iPod/i.test(navigator.userAgent);
+
+        if (isAndroid) {
+            setFallbackUrl(`intent://send?phone=${phone}&text=${text}#Intent;scheme=whatsapp;package=com.whatsapp;end`);
+        } else if (isIOS) {
+            setFallbackUrl(`whatsapp://send?phone=${phone}&text=${text}`);
+        } else {
+            setFallbackUrl(`https://wa.me/${phone}?text=${text}`);
+        }
+
         return () => clearTimeout(timer);
-    }, []);
+    }, [message]);
 
     useEffect(() => {
         if (!mounted) return;
@@ -64,14 +80,17 @@ export default function WhatsAppBridge() {
             } catch (error) {
                 console.error("Tracking Error:", error);
             } finally {
-                // 3. Redirect to WhatsApp using a safer deep-link strategy for IG/FB WebViews
+                // 3. Redirect to WhatsApp using advanced intent logic for IG/FB WebViews
                 setTimeout(() => {
-                    const phone = "51916854842";
                     const text = encodeURIComponent(message);
-                    const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+                    const isAndroid = /Android/i.test(navigator.userAgent);
+                    const isIOS = /iPhone|iPad|iPod/i.test(navigator.userAgent);
 
-                    if (isMobile) {
-                        // Native app scheme bypasses some WebView blocks seamlessly
+                    if (isAndroid) {
+                        // Advanced Android Intent to bypass WebView blocks
+                        window.location.href = `intent://send?phone=${phone}&text=${text}#Intent;scheme=whatsapp;package=com.whatsapp;end`;
+                    } else if (isIOS) {
+                        // Native app scheme for iOS
                         window.location.href = `whatsapp://send?phone=${phone}&text=${text}`;
 
                         // Fallback to wa.me if the scheme fails
@@ -107,7 +126,7 @@ export default function WhatsAppBridge() {
                 <div className={`pt-4 transition-opacity duration-500 ${showFallback ? "opacity-100" : "opacity-0 pointer-events-none"}`}>
                     <p className="text-xs text-slate-400 mb-3 block">¿No se abre automáticamente?</p>
                     <a
-                        href={`https://wa.me/51916854842?text=${encodeURIComponent(message)}`}
+                        href={fallbackUrl || `https://wa.me/${phone}?text=${encodeURIComponent(message)}`}
                         target="_blank"
                         rel="noopener noreferrer"
                         className="inline-flex items-center gap-2 px-6 py-3 bg-[#25D366] hover:bg-[#1EBE5C] text-white font-bold rounded-full transition-colors shadow-lg shadow-green-500/20"
