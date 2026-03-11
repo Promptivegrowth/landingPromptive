@@ -5,7 +5,8 @@ import { useTranslations } from "next-intl";
 import { motion, AnimatePresence } from "framer-motion";
 import ScrollReveal from "../ScrollReveal";
 import { ArrowRight, Check, Globe, Server, Mail, Lock, Smartphone, Search, BookOpen, HardDrive } from "lucide-react";
-import { usePathname, useRouter } from "next/navigation";
+import { usePathname } from "next/navigation";
+import { trackAndRedirectToWhatsApp } from "@/utils/trackAndRedirect";
 
 interface PlanCard {
     name: string;
@@ -18,7 +19,6 @@ interface PlanCard {
 export default function WebPricing() {
     const t = useTranslations("webPricing");
     const [activeTab, setActiveTab] = useState<"web" | "ecommerce">("web");
-    const router = useRouter();
     const pathname = usePathname();
     const currentLocale = pathname.startsWith("/en") ? "en" : "es";
 
@@ -26,7 +26,8 @@ export default function WebPricing() {
         const msg = currentLocale === "es"
             ? `Hola, me interesa el plan *${planName}* de diseño web. Quisiera más información y coordinar una reunión breve por Meet para conocer los detalles.`
             : `Hello, I'm interested in the *${planName}* web design plan. I would like more information and schedule a quick Google Meet to know the details.`;
-        router.push(`/${currentLocale}/whatsapp?text=${encodeURIComponent(msg)}&type=web_development&plan=${encodeURIComponent(planName)}`);
+
+        trackAndRedirectToWhatsApp(msg, "web_development", planName);
     };
 
     const webPlans: PlanCard[] = [

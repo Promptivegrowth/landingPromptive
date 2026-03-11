@@ -3,9 +3,10 @@
 import { useTranslations } from "next-intl";
 import { motion } from "framer-motion";
 import { ArrowRight } from "lucide-react";
-import { usePathname, useRouter } from "next/navigation";
+import { usePathname } from "next/navigation";
 import Script from "next/script";
 import { useEffect, useState } from "react";
+import { trackAndRedirectToWhatsApp } from "@/utils/trackAndRedirect";
 
 declare global {
     namespace JSX {
@@ -18,7 +19,6 @@ declare global {
 export default function WebHero() {
     const t = useTranslations("webHero");
     const [isMounted, setIsMounted] = useState(false);
-    const router = useRouter();
     const pathname = usePathname();
     const currentLocale = pathname.startsWith("/en") ? "en" : "es";
 
@@ -27,7 +27,7 @@ export default function WebHero() {
     }, []);
 
     const handleCTA = () => {
-        router.push(`/${currentLocale}/whatsapp?text=${encodeURIComponent("Hola, me interesa el servicio de *diseño y desarrollo web*. Quisiera más información sobre los planes.")}&type=web_development`);
+        trackAndRedirectToWhatsApp("Hola, me interesa el servicio de *diseño y desarrollo web*. Quisiera más información sobre los planes.", "web_development");
     };
 
     return (

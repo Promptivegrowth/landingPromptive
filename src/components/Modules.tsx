@@ -2,8 +2,9 @@
 
 import { useTranslations } from "next-intl";
 import { motion } from "framer-motion";
-import { usePathname, useRouter } from "next/navigation";
+import { usePathname } from "next/navigation";
 import ScrollReveal from "./ScrollReveal";
+import { trackAndRedirectToWhatsApp } from "@/utils/trackAndRedirect";
 import {
     Users, Package, DollarSign, Receipt,
     Cog, UserCheck, Target, FileText,
@@ -35,12 +36,11 @@ export default function Modules() {
         { key: "config", icon: Settings, color: "text-slate-500 dark:text-slate-400" },
     ];
 
-    const router = useRouter();
     const pathname = usePathname();
     const currentLocale = pathname.startsWith("/en") ? "en" : "es";
 
     const handleCTA = () => {
-        router.push(`/${currentLocale}/whatsapp?type=custom_software`);
+        trackAndRedirectToWhatsApp("Hola Promptive, quisiera agendar una demo gratuita y contarles mi idea", "custom_software");
     };
 
     return (

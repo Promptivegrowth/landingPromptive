@@ -7,6 +7,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import Image from "next/image";
 import { Globe, ArrowRight, ChevronDown, Sun, Moon, Menu, X } from "lucide-react";
 import { useTheme } from "./ThemeProvider";
+import { trackAndRedirectToWhatsApp } from "@/utils/trackAndRedirect";
 
 export default function Header() {
     const t = useTranslations("header");
@@ -39,9 +40,9 @@ export default function Header() {
 
     const handleCTA = () => {
         if (isWebRoute) {
-            router.push(`/${currentLocale}/whatsapp?text=${encodeURIComponent("Hola, me interesa el servicio de *diseño y desarrollo web*. Quisiera más información sobre los planes.")}&type=web_development`);
+            trackAndRedirectToWhatsApp("Hola, me interesa el servicio de *diseño y desarrollo web*. Quisiera más información sobre los planes.", "web_development");
         } else {
-            router.push(`/${currentLocale}/whatsapp?type=custom_software`);
+            trackAndRedirectToWhatsApp("Hola Promptive, quisiera agendar una demo gratuita y contarles mi idea", "custom_software");
         }
     };
 

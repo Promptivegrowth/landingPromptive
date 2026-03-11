@@ -3,9 +3,10 @@
 import { useTranslations } from "next-intl";
 import { motion } from "framer-motion";
 import { ArrowRight, Play, Sparkles } from "lucide-react";
-import { usePathname, useRouter } from "next/navigation";
+import { usePathname } from "next/navigation";
 import Script from "next/script";
 import { useEffect, useState } from "react";
+import { trackAndRedirectToWhatsApp } from "@/utils/trackAndRedirect";
 
 // Tells TypeScript to ignore the custom web component
 declare global {
@@ -19,7 +20,6 @@ declare global {
 export default function Hero() {
     const t = useTranslations("hero");
     const [isMounted, setIsMounted] = useState(false);
-    const router = useRouter();
     const pathname = usePathname();
     const currentLocale = pathname.startsWith("/en") ? "en" : "es";
 
@@ -28,7 +28,7 @@ export default function Hero() {
     }, []);
 
     const handleCTA = () => {
-        router.push(`/${currentLocale}/whatsapp?type=custom_software`);
+        trackAndRedirectToWhatsApp("Hola Promptive, quisiera agendar una demo gratuita y contarles mi idea", "custom_software");
     };
 
     return (

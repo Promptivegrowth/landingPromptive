@@ -2,21 +2,21 @@
 
 import { useTranslations } from "next-intl";
 import { ArrowRight } from "lucide-react";
-import { usePathname, useRouter } from "next/navigation";
+import { usePathname } from "next/navigation";
+import { trackAndRedirectToWhatsApp } from "@/utils/trackAndRedirect";
 
 export default function FloatingCTA() {
     const t = useTranslations("header");
     const webT = useTranslations("webHero");
-    const router = useRouter();
     const pathname = usePathname();
     const currentLocale = pathname.startsWith("/en") ? "en" : "es";
     const isWebRoute = pathname.includes("/desarrollo-web");
 
     const handleCTA = () => {
         if (isWebRoute) {
-            router.push(`/${currentLocale}/whatsapp?text=${encodeURIComponent("Hola, me interesa el servicio de *diseño y desarrollo web*. Quisiera más información sobre los planes.")}&type=web_development`);
+            trackAndRedirectToWhatsApp("Hola, me interesa el servicio de *diseño y desarrollo web*. Quisiera más información sobre los planes.", "web_development");
         } else {
-            router.push(`/${currentLocale}/whatsapp?type=custom_software`);
+            trackAndRedirectToWhatsApp("Hola Promptive, quisiera agendar una demo gratuita y contarles mi idea", "custom_software");
         }
     };
 

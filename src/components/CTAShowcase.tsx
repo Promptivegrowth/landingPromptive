@@ -7,6 +7,7 @@ import { usePathname, useRouter } from "next/navigation";
 import ScrollReveal from "./ScrollReveal";
 import { ArrowRight } from "lucide-react";
 import React, { useRef } from "react";
+import { trackAndRedirectToWhatsApp } from "@/utils/trackAndRedirect";
 
 function TiltCard({ children, rotateYFinal, originClass }: { children: React.ReactNode, rotateYFinal: number, originClass: string }) {
     const ref = useRef<HTMLDivElement>(null);
@@ -79,12 +80,11 @@ function TiltCard({ children, rotateYFinal, originClass }: { children: React.Rea
 export default function CTAShowcase() {
     const t = useTranslations("ctaShowcase");
 
-    const router = useRouter();
     const pathname = usePathname();
     const currentLocale = pathname.startsWith("/en") ? "en" : "es";
 
     const handleCTA = () => {
-        router.push(`/${currentLocale}/whatsapp?type=custom_software`);
+        trackAndRedirectToWhatsApp("Hola Promptive, quisiera agendar una demo gratuita y contarles mi idea", "custom_software");
     };
 
     return (
