@@ -42,7 +42,7 @@ export default function Header() {
         if (isWebRoute) {
             trackAndRedirectToWhatsApp("Hola, me interesa el servicio de *diseño y desarrollo web*. Quisiera más información sobre los planes.", "web_development");
         } else {
-            trackAndRedirectToWhatsApp("Hola Promptive, quisiera agendar una demo gratuita y contarles mi idea", "custom_software");
+            trackAndRedirectToWhatsApp("Hola Promptive. Me interesa desarrollar un software a medida para mi empresa. Quisiera recibir más información y coordinar una breve llamada de asesoría para validar la viabilidad técnica.", "custom_software");
         }
     };
 

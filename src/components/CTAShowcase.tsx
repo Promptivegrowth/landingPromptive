@@ -84,7 +84,7 @@ export default function CTAShowcase() {
     const currentLocale = pathname.startsWith("/en") ? "en" : "es";
 
     const handleCTA = () => {
-        trackAndRedirectToWhatsApp("Hola Promptive, quisiera agendar una demo gratuita y contarles mi idea", "custom_software");
+        trackAndRedirectToWhatsApp("Hola Promptive. Me interesa desarrollar un software a medida para mi empresa. Quisiera recibir más información y coordinar una breve llamada de asesoría para validar la viabilidad técnica.", "custom_software");
     };
 
     return (
