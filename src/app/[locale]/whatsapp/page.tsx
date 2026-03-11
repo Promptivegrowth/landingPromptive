@@ -17,17 +17,18 @@ export default function WhatsAppBridge() {
         setMounted(true);
         const timer = setTimeout(() => setShowFallback(true), 2500);
 
-        // Pre-compute the best URL for the platform
+        // Pre-compute the safest URL for the platform
         const text = encodeURIComponent(message);
-        const isAndroid = /Android/i.test(navigator.userAgent);
         const isIOS = /iPhone|iPad|iPod/i.test(navigator.userAgent);
+        const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
 
-        if (isAndroid) {
-            setFallbackUrl(`intent://send?phone=${phone}&text=${text}#Intent;scheme=whatsapp;package=com.whatsapp;end`);
-        } else if (isIOS) {
-            setFallbackUrl(`whatsapp://send?phone=${phone}&text=${text}`);
-        } else {
+        if (isIOS) {
             setFallbackUrl(`https://wa.me/${phone}?text=${text}`);
+        } else if (isMobile) {
+            // Safer generic fallback for Android WebViews (avoids intent crash)
+            setFallbackUrl(`https://api.whatsapp.com/send?phone=${phone}&text=${text}`);
+        } else {
+            setFallbackUrl(`https://web.whatsapp.com/send?phone=${phone}&text=${text}`);
         }
 
         return () => clearTimeout(timer);
@@ -80,26 +81,20 @@ export default function WhatsAppBridge() {
             } catch (error) {
                 console.error("Tracking Error:", error);
             } finally {
-                // 3. Redirect to WhatsApp using advanced intent logic for IG/FB WebViews
+                // 3. Redirect to WhatsApp using universally safe URLs for WebViews
                 setTimeout(() => {
                     const text = encodeURIComponent(message);
-                    const isAndroid = /Android/i.test(navigator.userAgent);
                     const isIOS = /iPhone|iPad|iPod/i.test(navigator.userAgent);
+                    const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
 
-                    if (isAndroid) {
-                        // Advanced Android Intent to bypass WebView blocks
-                        window.location.href = `intent://send?phone=${phone}&text=${text}#Intent;scheme=whatsapp;package=com.whatsapp;end`;
-                    } else if (isIOS) {
-                        // Native app scheme for iOS
-                        window.location.href = `whatsapp://send?phone=${phone}&text=${text}`;
-
-                        // Fallback to wa.me if the scheme fails
-                        setTimeout(() => {
-                            window.location.href = `https://wa.me/${phone}?text=${text}`;
-                        }, 1500);
-                    } else {
-                        // Desktop relies on wa.me/web
+                    if (isIOS) {
                         window.location.href = `https://wa.me/${phone}?text=${text}`;
+                    } else if (isMobile) {
+                        // Using api.whatsapp.com is more stable across Android WebViews
+                        window.location.href = `https://api.whatsapp.com/send?phone=${phone}&text=${text}`;
+                    } else {
+                        // Desktop relies on web.whatsapp
+                        window.location.href = `https://web.whatsapp.com/send?phone=${phone}&text=${text}`;
                     }
                 }, 800);
             }
